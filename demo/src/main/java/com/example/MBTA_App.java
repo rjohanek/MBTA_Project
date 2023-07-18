@@ -29,13 +29,13 @@ public class MBTA_App {
 
         // unable to filter the stops by type of route they are on,
         // so we must get the stops for each individual route at a time
-        get_subway_stops(
+        Tree mbtaTree = get_subway_stops(
                 "https://api-v3.mbta.com/stops?include=route&filter[route]=", ids);
 
         if (args.length > 2) {
             String start = args[1];
             String end = args[2];
-            find_path(start, end);
+            find_path(mbtaTree, start, end);
         }
 
     }
@@ -142,7 +142,7 @@ public class MBTA_App {
 
     // problem 2
     // get the number of stops for each route
-    public static HashMap<String, ArrayList<String>> get_subway_stops(String url, ArrayList<String> routes) {
+    public static Tree get_subway_stops(String url, ArrayList<String> routes) {
 
         // from name of route to list of stops on it
         HashMap<String, ArrayList<String>> routes_to_stops = new HashMap<String, ArrayList<String>>();
@@ -150,27 +150,33 @@ public class MBTA_App {
         // from name of stop to list of routes it is on
         HashMap<String, ArrayList<String>> stops_to_routes = new HashMap<String, ArrayList<String>>();
 
-        // name of route and number of stops on it
+        // tracking the current route with the most stops and the least stops
+        // represents name of the route and number of stops on it
         SimpleEntry<String, Integer> most = new SimpleEntry<String, Integer>("", 0);
         SimpleEntry<String, Integer> least = new SimpleEntry<String, Integer>("", 99);
 
-        // get the stops for each route
+        // for each route, get its stops, count them, and update the current most and least values
         for (int routeInt = 0; routeInt < routes.size(); routeInt++) {
             String route = routes.get(routeInt);
 
             // create connection, surround URL with a try-catch in case the URL is malformed
             open_connection(url + route);
 
-            // if the connection is successful, read the response from the connection
+            // if the connection is successful, read the response and get its data (a list of stops)
             ArrayList<String> stops = new ArrayList<>();
             StringBuffer response = read_response();
             JSONArray data = get_data(response);
 
+            connection.disconnect();
+
+            // for each stop, get its name and add its route to the stops_to_routes map
             for (int stopInt = 0; stopInt < data.size(); stopInt++) {
                 JSONObject stopObject = (JSONObject) data.get(stopInt);
                 JSONObject attributes = (JSONObject) stopObject.get("attributes");
                 String name = attributes.get("name").toString();
                 stops.add(name);
+
+                // update the stops_to_routes map to include this stop on this route
                 ArrayList<String> newValue = new ArrayList<>();
                 if (stops_to_routes.containsKey(name)) {
                     newValue = stops_to_routes.get(name);
@@ -180,19 +186,19 @@ public class MBTA_App {
                     newValue.add(route);
                     stops_to_routes.put(name, newValue);
                 }
-
             }
 
+            // keep the most and least values up to date
             if (stops.size() > most.getValue()) {
                 most = new SimpleEntry<String, Integer>(routes.get(routeInt), stops.size());
             } else if (stops.size() < least.getValue()) {
                 least = new SimpleEntry<String, Integer>(routes.get(routeInt), stops.size());
             }
 
-            connection.disconnect();
+            // add this route and its stops to the  routes_to_stops map
             routes_to_stops.put(routes.get(routeInt), stops);
-
         }
+
         System.out.println("Problem 2 Solution");
         System.out.print("The route with the most number of stops is ");
         System.out.print(most.getKey() + " with ");
@@ -205,17 +211,22 @@ public class MBTA_App {
         System.out.println("The stops that connect multiple routes are: ");
         for (final Map.Entry<String, ArrayList<String>> entry : stops_to_routes.entrySet()) {
             if (entry.getValue().size() > 1) {
-                System.out.print(entry.getKey());
-                System.out.print(" connects to the following routes: ");
+                System.out.println(entry.getKey());
+                System.out.print("  connects to the following routes: ");
                 System.out.println(entry.getValue().toString().replace("[", "").replace("]", ""));
             }
         }
 
-        return routes_to_stops;
+        return new Tree(routes_to_stops, stops_to_routes);
     }
 
-    public void findpath(String start, String end) {
+    public static String find_path(Tree tree, String start, String end) {
+        // all possible starting branches
+        ArrayList<String> startingBranches = tree.getStops_to_routes().get(start);
+        // all possible ending branches
+        ArrayList<String> endingBranches = tree.getRoutes_to_stops().get(end);
 
+        //
     }
 
 }
