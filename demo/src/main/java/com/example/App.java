@@ -21,9 +21,9 @@ public class App {
         // verify there are enough arguments
         // then find a path between two stops, print it
         if (args.length > 2) {
-            String start = args[1];
-            String end = args[2];
-            mbtaTree.find_path(start, end);
+        String start = args[1];
+        String end = args[2];
+        mbtaTree.find_path(start, end);
         }
 
     }
