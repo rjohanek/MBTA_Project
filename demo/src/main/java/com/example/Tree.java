@@ -1,11 +1,8 @@
 package com.example;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 /*
  * A representation of a tree based on its branches and each branches leaves
@@ -14,28 +11,28 @@ import java.util.Set;
 public class Tree {
 
 	// The MBTA system organized by route, a map from route to its stops
-	HashMap<String, ArrayList<String>> routes_to_stops = new HashMap<String, ArrayList<String>>();
+	HashMap<String, ArrayList<String>> routesToStops = new HashMap<String, ArrayList<String>>();
 
 	// The MBTA system organized by stop, a map from stop to its routes
-	HashMap<String, ArrayList<String>> stops_to_routes = new HashMap<String, ArrayList<String>>();
+	HashMap<String, ArrayList<String>> stopsToRoutes = new HashMap<String, ArrayList<String>>();
 
 	/**
 	 * Basic constructor of a Tree
 	 * 
-	 * @param routes_to_stops representing branches and their nodes
-	 * @param stops_to_routes representing nodes and their branches
+	 * @param routesToStops representing branches and their nodes
+	 * @param stopsToRoutes representing nodes and their branches
 	 */
-	public Tree(HashMap<String, ArrayList<String>> routes_to_stops, HashMap<String, ArrayList<String>> stops_to_routes) {
-		this.routes_to_stops = routes_to_stops;
-		this.stops_to_routes = stops_to_routes;
+	public Tree(HashMap<String, ArrayList<String>> routesToStops, HashMap<String, ArrayList<String>> stopsToRoutes) {
+		this.routesToStops = routesToStops;
+		this.stopsToRoutes = stopsToRoutes;
 	}
 
-	public HashMap<String, ArrayList<String>> getRoutes_to_stops() {
-		return (HashMap<String, ArrayList<String>>) routes_to_stops.clone();
+	public HashMap<String, ArrayList<String>> getRoutesToStops() {
+		return (HashMap<String, ArrayList<String>>) routesToStops.clone();
 	}
 
 	public HashMap<String, ArrayList<String>> getStops_to_routes() {
-		return (HashMap<String, ArrayList<String>>) stops_to_routes.clone();
+		return (HashMap<String, ArrayList<String>>) stopsToRoutes.clone();
 	}
 
 	/*
@@ -43,7 +40,7 @@ public class Tree {
 	 * Choose a route that the starting stop is on and search it.
 	 * At each stop, check to see if it is the end stop.
 	 * If it isn't, keep track of any unexplored connecting routes.
-* If the ending stop is on one of these routes, return the path so far.
+   * If the ending stop is on one of these routes, return the path so far.
 	 * Otherwise, add the route to the frontier.
 	 * When done exploring the current route, continue
 	 * with the next route on the frontier, until either
@@ -51,9 +48,9 @@ public class Tree {
 	 */
 	public ArrayList<String> find_path(String start, String end) {
     // all possible paths up to this point
-		// for the first starting branches its a list of lists of one
+		// currently representing starting branches as a list of lists of length one
 		ArrayList<ArrayList<String>> possible_paths = new ArrayList<>();
-		for (String route : stops_to_routes.get(start)) {
+		for (String route : stopsToRoutes.get(start)) {
 			ArrayList<String> tempPath = new ArrayList<>();
 			tempPath.add(route);
 			possible_paths.add(tempPath);
@@ -61,7 +58,7 @@ public class Tree {
 		}
 
 		// all possible ending branches
-		ArrayList<String> endingBranches = stops_to_routes.get(end);
+		ArrayList<String> endingBranches = stopsToRoutes.get(end);
 
 		// explored branches
 		ArrayList<String> explored = new ArrayList<>();
@@ -73,7 +70,6 @@ public class Tree {
 		}
 		}
 
-		// BFS
 		// else, choose the first starting branch and explore each of its stops
 		// if one of the stops connects to a route, add it to the frontier
 		// and check if it is an ending branch,
@@ -86,7 +82,7 @@ public class Tree {
 			ArrayList<String> path = possible_paths.get(0);
 			String current_route = path.get(path.size() - 1);
 
-			ArrayList<String> stops = routes_to_stops.get(current_route);
+			ArrayList<String> stops = routesToStops.get(current_route);
 			for (String stop : stops) {
 
 				if (stop == end) {
@@ -95,7 +91,7 @@ public class Tree {
 				
 				// get the routes for this stop and filter them
 				ArrayList<String> unexplored = new ArrayList<String>();
-				ArrayList<String> routes = stops_to_routes.get(stop);
+				ArrayList<String> routes = stopsToRoutes.get(stop);
 								for (String route : routes) {
 					if (!explored.contains(route)) {
 						unexplored.add(route);

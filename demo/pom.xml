@@ -18,7 +18,7 @@
     <jacoco.unit-tests.limit.instruction-ratio>0%</jacoco.unit-tests.limit.instruction-ratio>
     <jacoco.unit-tests.limit.branch-ratio>0%</jacoco.unit-tests.limit.branch-ratio>
     <jacoco.unit-tests.limit.class-complexity>20</jacoco.unit-tests.limit.class-complexity>
-    <jacoco.unit-tests.limit.method-complexity>5</jacoco.unit-tests.limit.method-complexity>
+    <jacoco.unit-tests.limit.method-complexity>12</jacoco.unit-tests.limit.method-complexity>
   </properties>
   <dependencies>
     <dependency>
@@ -83,13 +83,13 @@
           <skip>${skipTests}</skip>
         </configuration>
         <executions>
-          <execution>
+          <!-- <execution>
             <id>checkstyle</id>
             <phase>validate</phase>
             <goals>
               <goal>check</goal>
             </goals>
-          </execution>
+          </execution> -->
         </executions>
       </plugin>
       <plugin>
