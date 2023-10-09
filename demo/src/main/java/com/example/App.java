@@ -1,6 +1,7 @@
 package com.example;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /*
  * This is the main program that prints responses to the three questions
@@ -16,21 +17,25 @@ public class App {
     public static void main(String[] args) {
 
         // problem 1 solution
-        // get the routes, prints long names
-        ArrayList<String> ids = MBTATool.getSubwayRoutes("https://api-v3.mbta.com/routes/?filter[type]=0,1");
+        // get the routes, prints long names, returns map from ids to longnames
+        Collection<String> ids = MBTATool.getSubwayRoutes("https://api-v3.mbta.com/routes/?filter[type]=0,1").keySet();
 
         // problem 2 solution
         // get the stops for each route, returns tree representing subway system
-        Tree mbtaTree = MBTATool.getSubwayStops(
-                "https://api-v3.mbta.com/stops?include=route&filter[route]=", ids);
+        Tree mbtaTree = MBTATool.generateTree(
+                "https://api-v3.mbta.com/stops?include=route&filter[route]=", new ArrayList<String>(ids));
+        // prints requested information
+        mbtaTree.getRouteWithMostStops();
+        mbtaTree.getRouteWithLeastStops();
+        mbtaTree.getConnectingStops();
 
         // verify there are enough arguments
-        // then find a path between two stops, print it
+        // then find a path between two stops
         if (args.length > 2) {
             String start = args[1];
             String end = args[2];
             // problem 3 solution
-            // search the tree using BFS to find the routes between stops
+            // search the tree using BFS, prints path
             mbtaTree.find_path(start, end);
         }
 

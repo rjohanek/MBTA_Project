@@ -1,12 +1,17 @@
 package com.example;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 /*
- * A representation of a tree based on its branches and each branches leaves
- * as well as each leaf and the branches they are on.
+ * A representation of a tree based on its branches and each branches nodes
+ * as well as each node and the branches they are on.
+ * 
+ * Optionally, the tree can include information on which branch has the most nodes. 
+ * And which branch has the least nodes.
  */
 public class Tree {
 
@@ -31,9 +36,77 @@ public class Tree {
 		return (HashMap<String, ArrayList<String>>) routesToStops.clone();
 	}
 
-	public HashMap<String, ArrayList<String>> getStops_to_routes() {
+	public HashMap<String, ArrayList<String>> getStopsToRoutes() {
 		return (HashMap<String, ArrayList<String>>) stopsToRoutes.clone();
 	}
+
+
+	/**
+	 * Calculate the max number of stops any route has and return the 
+	 * name of the route and its number of stops
+	 * 
+	 * @return entry of route name to number of stops
+	 */
+	public SimpleEntry<String, Integer> getRouteWithMostStops() {
+		// tracking the current route with the most stops
+		// represents name of the route and number of stops on it
+		SimpleEntry<String, Integer> most = new SimpleEntry<String, Integer>("", 0);
+		for (Map.Entry<String, ArrayList<String>> entry : this.routesToStops.entrySet()) {
+			ArrayList<String> stops = entry.getValue();
+			// keep the most and least values up to date
+			if (stops.size() > most.getValue()) {
+				most = new SimpleEntry<String, Integer>(entry.getKey(), stops.size());
+			}
+		}
+
+		System.out.println("Problem 2 Solution");
+    System.out.print("The route with the most number of stops is ");
+    System.out.print(most.getKey() + " with ");
+		System.out.println(most.getValue() + " stops");
+				
+		return most;
+	}
+
+	/**
+	 * Calculate the least number of stops any route has and return the 
+	 * name of the route and its number of stops
+	 * 
+	 * @return entry of route name to number of stops
+	 */
+	public SimpleEntry<String, Integer> getRouteWithLeastStops() {
+		// tracking the current route with the least stops
+		// represents name of the route and number of stops on it
+		SimpleEntry<String, Integer> least = new SimpleEntry<String, Integer>("", 999);
+		for (Map.Entry<String, ArrayList<String>> entry : this.routesToStops.entrySet()) {
+			ArrayList<String> stops = entry.getValue();
+			// keep the most and least values up to date
+			if (stops.size() < least.getValue()) {
+				least = new SimpleEntry<String, Integer>(entry.getKey(), stops.size());
+			}
+		}
+
+		System.out.print("The route with the least number of stops is ");
+		System.out.print(least.getKey() + " with ");
+		System.out.println(least.getValue() + " stops");
+
+		return least;
+	}
+	
+	public HashMap<String, ArrayList<String>> getConnectingStops() {
+		HashMap<String, ArrayList<String>> connectingStopsToRoutes = new HashMap<>();
+		System.out.println("The stops that connect multiple routes are: ");
+		for (final Map.Entry<String, ArrayList<String>> entry : this.stopsToRoutes.entrySet()) {
+			if (entry.getValue().size() > 1) {
+				connectingStopsToRoutes.put(entry.getKey(), entry.getValue());
+				System.out.println(entry.getKey());
+				System.out.print("  connects to the following routes: ");
+				System.out.println(entry.getValue().toString().replace("[", "").replace("]", ""));
+			}
+		}
+		return connectingStopsToRoutes;
+
+	}
+	
 
 	/*
 	 * Breadth First Search to ensure fewest transfers.
