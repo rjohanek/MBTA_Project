@@ -20,7 +20,7 @@ public class MBTATool {
      * Returns a JSONArray representing the data from the response.
      */
     private static JSONArray getData(Connection connection) {
-        StringBuffer response = connection.readResponse();
+        StringBuilder response = connection.readResponse();
 
         // convert the response to a json object
         JSONParser parser = new JSONParser();
@@ -87,7 +87,7 @@ public class MBTATool {
      * will act as a tree that will allow us to search the routes 
      * and can support added functionality later.
      */
-    public static Tree generateTree(String url, ArrayList<String> routes) {
+    public static Tree generateTree(String url, HashMap<String, String> routes) {
 
         // from name of route to list of stops on it
         HashMap<String, ArrayList<String>> routesToStops = new HashMap<String, ArrayList<String>>();
@@ -96,11 +96,11 @@ public class MBTATool {
         HashMap<String, ArrayList<String>> stopsToRoutes = new HashMap<String, ArrayList<String>>();
 
         // for each route, get its stops
-        for (int routeInt = 0; routeInt < routes.size(); routeInt++) {
-            String route = routes.get(routeInt);
+        for (String routeID : routes.keySet()) {
+            String routeName = routes.get(routeID);
 
             // create connection, surround URL with a try-catch in case the URL is malformed
-            Connection connection = new Connection(url + route);
+            Connection connection = new Connection(url + routeID);
 
             // read the response and get its data (a list of stops)
             ArrayList<String> stops = new ArrayList<>();
@@ -119,16 +119,16 @@ public class MBTATool {
                 ArrayList<String> newValue = new ArrayList<>();
                 if (stopsToRoutes.containsKey(name)) {
                     newValue = stopsToRoutes.get(name);
-                    newValue.add(route);
+                    newValue.add(routeName);
                     stopsToRoutes.put(name, newValue);
                 } else {
-                    newValue.add(route);
+                    newValue.add(routeName);
                     stopsToRoutes.put(name, newValue);
                 }
             }
 
             // add this route and its stops to the routes_to_stops map
-            routesToStops.put(routes.get(routeInt), stops);
+            routesToStops.put(routeName, stops);
         }
 
         return new Tree(routesToStops, stopsToRoutes);

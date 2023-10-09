@@ -6,10 +6,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 /**
  * Represents a connection to a given url, 
@@ -80,9 +76,9 @@ public class Connection {
      * string buffer
      * Returns the string buffer containing the response.
      */
-    public StringBuffer readResponse() {
+    public StringBuilder readResponse() {
         BufferedReader reader;
-        StringBuffer response = new StringBuffer();
+        StringBuilder response = new StringBuilder();
         String line;
         try {
             reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));

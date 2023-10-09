@@ -1,7 +1,6 @@
 package com.example;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashMap;
 
 /*
  * This is the main program that prints responses to the three questions
@@ -18,12 +17,13 @@ public class App {
 
         // problem 1 solution
         // get the routes, prints long names, returns map from ids to longnames
-        Collection<String> ids = MBTATool.getSubwayRoutes("https://api-v3.mbta.com/routes/?filter[type]=0,1").keySet();
+        HashMap<String, String> routesIdToName = MBTATool.getSubwayRoutes(
+            "https://api-v3.mbta.com/routes/?filter[type]=0,1");
 
         // problem 2 solution
         // get the stops for each route, returns tree representing subway system
         Tree mbtaTree = MBTATool.generateTree(
-                "https://api-v3.mbta.com/stops?include=route&filter[route]=", new ArrayList<String>(ids));
+                "https://api-v3.mbta.com/stops?include=route&filter[route]=", routesIdToName);
         // prints requested information
         mbtaTree.getRouteWithMostStops();
         mbtaTree.getRouteWithLeastStops();
