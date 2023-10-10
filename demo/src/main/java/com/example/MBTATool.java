@@ -64,9 +64,6 @@ public class MBTATool {
             result.put(id, longName);
         }
 
-        System.out.println("Problem 1 Solution:");
-        System.out.print("The names of all train routes are ");
-        System.out.println(result.values().toString().replace("[", "").replace("]", ""));
         connection.disconnect();
 
         return result;
@@ -74,7 +71,8 @@ public class MBTATool {
 
     /*
      * This method generates a tree which is used to solve problems 2 and 3.
-     * Due to the API design, stops are retreived for each individual route at a time.
+     * Due to the API design, stops are retreived for each individual route at a
+     * time.
      * Using a base url and a list of route IDs,
      * it makes a unique connection for each route,
      * reads each response, which represents a list of stops,
@@ -84,10 +82,10 @@ public class MBTATool {
      * 
      * Note: This return type of this method was created with problem 3 in mind.
      * While there are other simpler ways to represent the data, these maps
-     * will act as a tree that will allow us to search the routes 
+     * will act as a tree that will allow us to search the routes
      * and can support added functionality later.
      */
-    public static Tree generateTree(String url, HashMap<String, String> routes) {
+    public static Tree generateMBTATree(String url, HashMap<String, String> routes) {
 
         // from name of route to list of stops on it
         HashMap<String, ArrayList<String>> routesToStops = new HashMap<String, ArrayList<String>>();

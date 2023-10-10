@@ -17,12 +17,11 @@ public class MBTAToolTest {
 	String problem1URL = "https://api-v3.mbta.com/routes/?filter[type]=0,1";
 	String problem1URLNoFilter = "https://api-v3.mbta.com/routes/";
 	String problem2URL = "https://api-v3.mbta.com/stops?include=route&filter[route]=";
-	Collection<String> expected = new ArrayList<String>(Arrays.asList("Red Line", "Blue Line", "Green Line C", 
+	Collection<String> expected = new ArrayList<String>(Arrays.asList("Red Line", "Blue Line", "Green Line C",
 			"Mattapan Trolley", "Green Line B", "Green Line E", "Green Line D", "Orange Line"));
 	Collection<String> someStops = new ArrayList<String>(Arrays.asList("Saint Mary's Street", "Longwood", "Park Street",
-	 "Beaconsfield", "Government Center", "Milton", "Coolidge Corner", "East Somerville", "Longwood Medical Area",
+			"Beaconsfield", "Government Center", "Milton", "Coolidge Corner", "East Somerville", "Longwood Medical Area",
 			"JFK/UMass", "Harvard", "Washington Square", "North Station", "Magoun Square"));
-
 
 	@Test
 	public void testGetSubwayRoutes() {
@@ -41,14 +40,14 @@ public class MBTAToolTest {
 	@Test
 	public void testGenerateTree() {
 		HashMap<String, String> routes = MBTATool.getSubwayRoutes(problem1URL);
-		Tree response = MBTATool.generateTree(problem2URL, routes);
+		Tree response = MBTATool.generateMBTATree(problem2URL, routes);
 		assertEquals(response.getStopsToRoutes().size(), 125);
 		assertEquals(response.getRoutesToStops().size(), expected.size());
 		assertTrue(response.getStopsToRoutes().keySet().containsAll(someStops));
 		assertTrue(response.getRoutesToStops().keySet().containsAll(expected));
 		assertTrue(noEmptyLists(response.getStopsToRoutes().values()));
 		assertTrue(noEmptyLists(response.getRoutesToStops().values()));
- }
+	}
 
 	/**
 	 * Ensure the given list of lists does not contain any empty lists.
