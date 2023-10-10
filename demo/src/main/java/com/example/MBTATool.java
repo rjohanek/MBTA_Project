@@ -72,10 +72,8 @@ public class MBTATool {
     /*
      * This method generates a tree which is used to solve problems 2 and 3.
      * Due to the API design, stops are retreived for each individual route at a
-     * time.
-     * Using a base url and a list of route IDs,
-     * it makes a unique connection for each route,
-     * reads each response, which represents a list of stops,
+     * time. Using a base url and a list of route IDs, it makes a unique 
+     * connection for each route, reads each response, 
      * and retrieves the names of each stop in the response.
      * This information is kept in a Map from route to a list of its stops
      * and a Map from stop to list of routes.
@@ -106,14 +104,14 @@ public class MBTATool {
 
             connection.disconnect();
 
-            // for each stop, get its name and add its route to the stops_to_routes map
+            // for each stop, get its name and add its route to the stopsToRoutes map
             for (int stopInt = 0; stopInt < data.size(); stopInt++) {
                 JSONObject stopObject = (JSONObject) data.get(stopInt);
                 JSONObject attributes = (JSONObject) stopObject.get("attributes");
                 String name = attributes.get("name").toString();
                 stops.add(name);
 
-                // update the stops_to_routes map to include this stop on this route
+                // update the stopsToRoutes map to include this stop on this route
                 ArrayList<String> newValue = new ArrayList<>();
                 if (stopsToRoutes.containsKey(name)) {
                     newValue = stopsToRoutes.get(name);
@@ -124,11 +122,9 @@ public class MBTATool {
                     stopsToRoutes.put(name, newValue);
                 }
             }
-
-            // add this route and its stops to the routes_to_stops map
+            // add this route and its stops to the routesToStops map
             routesToStops.put(routeName, stops);
         }
-
         return new Tree(routesToStops, stopsToRoutes);
     }
 }

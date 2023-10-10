@@ -14,7 +14,8 @@ public class App {
     /*
      * This is the main method that uses the MBTA tool to make connections with the
      * MBTA server.
-     * It calls the MBTA Rool to retrieve, calcuate, and print the requested data.
+     * It calls the MBTA tool and Tree to retrieve, calcuate, and print the
+     * requested data.
      */
     public static void main(String[] args) {
 
@@ -30,9 +31,9 @@ public class App {
         // get the stops for each route, returns tree representing subway system
         Tree mbtaTree = MBTATool.generateMBTATree(
                 "https://api-v3.mbta.com/stops?include=route&filter[route]=", routesIdToName);
-        SimpleEntry<String, Integer> most = mbtaTree.getRouteWithMostStops();
-        SimpleEntry<String, Integer> least = mbtaTree.getRouteWithLeastStops();
-        HashMap<String, ArrayList<String>> connecting = mbtaTree.getConnectingStops();
+        SimpleEntry<String, Integer> most = mbtaTree.getBranchWithMostNodes();
+        SimpleEntry<String, Integer> least = mbtaTree.getBranchWithLeastNodes();
+        HashMap<String, ArrayList<String>> connecting = mbtaTree.getConnectingNodes();
         System.out.println("Problem 2 Solution:");
         System.out.print("The route with the most number of stops is ");
         System.out.print(most.getKey() + " with ");
@@ -58,9 +59,6 @@ public class App {
             System.out.println("Problem 3 Solution");
             System.out.print("The route between " + start + " and " + end + " is ");
             System.out.println(path.toString().replace("[", "").replace("]", ""));
-
         }
-
     }
-
 }

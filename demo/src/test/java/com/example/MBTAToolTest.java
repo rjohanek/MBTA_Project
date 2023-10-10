@@ -41,12 +41,12 @@ public class MBTAToolTest {
 	public void testGenerateTree() {
 		HashMap<String, String> routes = MBTATool.getSubwayRoutes(problem1URL);
 		Tree response = MBTATool.generateMBTATree(problem2URL, routes);
-		assertEquals(response.getStopsToRoutes().size(), 125);
-		assertEquals(response.getRoutesToStops().size(), expected.size());
-		assertTrue(response.getStopsToRoutes().keySet().containsAll(someStops));
-		assertTrue(response.getRoutesToStops().keySet().containsAll(expected));
-		assertTrue(noEmptyLists(response.getStopsToRoutes().values()));
-		assertTrue(noEmptyLists(response.getRoutesToStops().values()));
+		assertEquals(response.getNodeToBranches().size(), 125);
+		assertEquals(response.getBranchToNodes().size(), expected.size());
+		assertTrue(response.getNodeToBranches().keySet().containsAll(someStops));
+		assertTrue(response.getBranchToNodes().keySet().containsAll(expected));
+		assertTrue(noEmptyLists(response.getNodeToBranches().values()));
+		assertTrue(noEmptyLists(response.getBranchToNodes().values()));
 	}
 
 	/**

@@ -35,41 +35,41 @@ public class TreeTest {
 	}
 
 	@Test
-	public void testGetRouteWithMostStops() {
+	public void testGetBranchWithMostNodes() {
 		Tree tree = MBTATool.generateMBTATree(problem2URL, routes);
-		SimpleEntry<String, Integer> response = tree.getRouteWithMostStops();
+		SimpleEntry<String, Integer> response = tree.getBranchWithMostNodes();
 		SimpleEntry<String, Integer> expected = new SimpleEntry<String, Integer>("Green Line E", 25);
 		assertEquals(expected, response);
 	}
 
 	@Test
-	public void testGetRouteWithMostStops2() {
+	public void testGetBranchWithMostNodes2() {
 		Tree tree = new Tree(null, null);
 		assertThrows(NullPointerException.class, () -> {
-			tree.getRouteWithMostStops();
+			tree.getBranchWithMostNodes();
 		});
 	}
 
 	@Test
-	public void testGetRouteWithLeastStops() {
+	public void testGetBranchWithLeastNodes() {
 		Tree tree = MBTATool.generateMBTATree(problem2URL, routes);
-		SimpleEntry<String, Integer> response = tree.getRouteWithLeastStops();
+		SimpleEntry<String, Integer> response = tree.getBranchWithLeastNodes();
 		SimpleEntry<String, Integer> expected = new SimpleEntry<String, Integer>("Mattapan Trolley", 8);
 		assertEquals(expected, response);
 	}
 
 	@Test
-	public void testGetRouteWithLeastStops2() {
+	public void testGetBranchWithLeastNodes2() {
 		Tree tree = new Tree(null, null);
 		assertThrows(NullPointerException.class, () -> {
-			tree.getRouteWithLeastStops();
+			tree.getBranchWithLeastNodes();
 		});
 	}
 
 	@Test
-	public void testGetConnectingStops() {
+	public void testGetConnectingNodes() {
 		Tree tree = MBTATool.generateMBTATree(problem2URL, routes);
-		HashMap<String, ArrayList<String>> response = tree.getConnectingStops();
+		HashMap<String, ArrayList<String>> response = tree.getConnectingNodes();
 		assertEquals(response.size(), 14);
 		assertTrue(response.keySet().contains("Government Center"));
 		assertEquals(response.get("Government Center"), new ArrayList<String>(
@@ -78,10 +78,10 @@ public class TreeTest {
 	}
 
 	@Test
-	public void testGetConnectingStops2() {
+	public void testGetConnectingNodes2() {
 		Tree tree = new Tree(null, null);
 		assertThrows(NullPointerException.class, () -> {
-			tree.getConnectingStops();
+			tree.getConnectingNodes();
 		});
 	}
 

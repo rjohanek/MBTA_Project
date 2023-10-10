@@ -24,7 +24,7 @@ public class Connection {
     }
 
     /*
-     * Constructor for a Connection
+     * Constructor for a Connection.
      */
     public Connection(String url) {
         openConnection(url);
@@ -47,7 +47,7 @@ public class Connection {
                 connection.setConnectTimeout(10000);
                 connection.setReadTimeout(10000);
 
-                // response_code determines if the connection was successful
+                // responseCode determines if the connection was successful
                 responseCode = connection.getResponseCode();
 
                 if (responseCode > 299) {
@@ -73,7 +73,7 @@ public class Connection {
 
     /**
      * Using the connection, get the input stream and read all the input into a
-     * string buffer
+     * string builder.
      * Returns the string buffer containing the response.
      */
     public StringBuilder readResponse() {
