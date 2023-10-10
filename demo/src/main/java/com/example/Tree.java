@@ -2,6 +2,7 @@ package com.example;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -124,8 +125,7 @@ public class Tree {
 				// currently representing starting branches as a list of lists of length one
 				ArrayList<ArrayList<String>> possible_paths = new ArrayList<>();
 				for (String route : stopsToRoutes.get(start)) {
-					ArrayList<String> tempPath = new ArrayList<>();
-					tempPath.add(route);
+					ArrayList<String> tempPath = new ArrayList<>(Arrays.asList(route));
 					possible_paths.add(tempPath);
 
 				}
@@ -150,14 +150,12 @@ public class Tree {
 				// else, continue searching the current route
 				// once all stops on the current route have been explored
 				// start the process again with the next route
-
 				while (possible_paths.size() > 0) {
-					ArrayList<String> path = possible_paths.get(0);
-					String current_route = path.get(path.size() - 1);
+					ArrayList<String> path = possible_paths.remove(0);
+					String currentRoute = path.get(path.size() - 1);
 
-					ArrayList<String> stops = routesToStops.get(current_route);
+					ArrayList<String> stops = routesToStops.get(currentRoute);
 					for (String stop : stops) {
-
 						if (stop == end) {
 							return path;
 						}
@@ -192,6 +190,5 @@ public class Tree {
 			throw new NullPointerException("No routesToStops or stopsToRoutes entered");
 		}
 	}
-
 
 }
